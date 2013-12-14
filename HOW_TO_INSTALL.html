@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>ثبت آگهی</title>
+<style>
+body , html{
+margin: 0px;
+	padding:0px;
+	color: #000;
+	font-family: tahoma, Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-decoration: none;
+ width:100%;
+
+	position:relative;
+
+	background-color: #c0deed;
+
+
+height:100%;
+}
+#main{
+width:900px;
+
+padding:10px;
+margin:0px auto;
+background:#fff;
+color:#000;
+overflow:visible;
+	position:relative;
+	direction:rtl;
+}
+code{
+direction:ltr;
+txt-align:left;
+padding:10px;
+border:dotted 2px #999999;
+background:#dbdedc;
+margin:20px;
+display:inline-block;
+max-height:300px;
+overflow:auto;
+width:95%;
+}
+</style>
+</head>
+
+<body>
+
+<div id="main">
+<div style="background:pink;padding:10px;font-size:14px;">
+قبل از انجام هر تغییر از فایل بک آپ بگیرید <br>
+در کد هایی که در فایل addfllow.php در پوشه controllers قرار میدهید تمام مقادیر $merchantID را به مقدار خود تغییر دهید<br>
+
+<b>تهیه توسط آرش توانایی - 09130246374 - www.sharetronix.bolur.ir & www.bolur.ir</b>
+</div>
+<center>
+<font color="green" size="4">ثبت آگهی - تهیه کننده : مهندس آرش توانایی- حامی: شرکت زرین پال</font>
+</center><br><br>
+1- ابتدا فایل ها را در محل مناسب قرار بدید <br><br><br>
+
+
+
+2- به system/conf_main.php برید و کد زیر را بیابید
+<br>
+<code>$C->API_ID		= 0; </code>.
+<br>
+بعد از آن اضافه کنید
+
+<br>
+
+<code>
+$C->ADD_M1 = '1000';<br>
+$C->ADD_M3 = '2000';<br>
+$C->ADD_M6 = '3000';<br>
+$C->ADD_M12 = '5000';<br><br><br>
+
+<div style="background:pink;padding:10px;font-size:14px;">
+قیمت دوره ها می باشد که به تومان است
+</div>
+</code>
+
+
+
+
+<br>
+3- کد زیر را در منوهای کناری در فایل themes/**/html/dashboard.php بگذارید
+<div style="background:pink;padding:10px;font-size:14px;">
+در زیر کد دومی فرم سفارش را میسازد که در هر جا میتوانید قرار دهید مثلا در themes/**/html/advertise.php
+</div>
+<code>
+&lt;?php	$this->load_template('db_adds.php');	?&gt;		
+<br>
+&lt;?php	$this->load_template('db_myadd.php');	?&gt;								
+</code>
+<br>
+
+
+4- فایل system/clasess/class_network.php را باز کنید و در آخر قبل از مقدار زیر :
+
+<code>
+	}
+	
+?&gt;	
+							
+</code>
+
+کد زیر را قرار دهید:
+<br>
+<code>
+public function get_add_me(){
+<br>
+
+$afu = array();
+<br>
+$q = $this->db2->query('SELECT * FROM users_add_pay ORDER BY rand() LIMIT 1');<br>
+while($o = $this->db2->fetch_object($q)){<br>
+if($o->next_date > time()){<br>
+
+$afu[] = $o;<br>
+
+}else{<br>
+$this->db2->query('DELETE FROM users_add_pay WHERE id="'.$o->id.'"');<br>
+}<br>
+
+
+}<br>
+if(empty($afu)){<br>
+return false;<br>
+}<br>
+
+return $afu;<br>
+}	<br>
+							
+</code>
+
+
+5- به phpmyadmin برید و در برگه sql در بالا کد زیر را اجرا فرمایید
+
+<code>
+
+CREATE TABLE IF NOT EXISTS `users_add_pay` ( <br>
+  `id` int(10) NOT NULL AUTO_INCREMENT,<br>
+  `user_id` int(10) NOT NULL,<br>
+  `date` varchar(128) COLLATE utf8_persian_ci NOT NULL,<br>
+  `next_date` varchar(128) COLLATE utf8_persian_ci NOT NULL,<br>
+  `matn` varchar(128) COLLATE utf8_persian_ci NOT NULL,<br>
+  `baste` int(2) NOT NULL DEFAULT '0',<br>
+  `trak` varchar(128) COLLATE utf8_persian_ci NOT NULL,<br>
+  PRIMARY KEY (`id`),<br>
+  KEY `user_id` (`user_id`)<br>
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci AUTO_INCREMENT=1 ;");	<br>
+
+</code>
+</div>
+</body>
+</html>
